@@ -68,6 +68,7 @@ public class OverlayView extends View {
     private int mTouchPointThreshold;
     private int mCropRectMinSize;
     private int mCropRectCornerTouchAreaLineLength;
+    private float mCropRectMinRatio, mCropRectMaxRatio;
 
     private OverlayViewChangeListener mCallback;
 
@@ -129,6 +130,14 @@ public class OverlayView extends View {
     public void setFreestyleCropMode(@FreestyleMode int mFreestyleCropMode) {
         this.mFreestyleCropMode = mFreestyleCropMode;
         postInvalidate();
+    }
+
+    public void setCropRectMinRatio(float minRatio) {
+        this.mCropRectMinRatio = minRatio;
+    }
+
+    public void setCropRectMaxRatio(float maxRatio) {
+        this.mCropRectMaxRatio = maxRatio;
     }
 
     /**
@@ -390,8 +399,11 @@ public class OverlayView extends View {
                 return;
         }
 
-        boolean changeHeight = mTempRect.height() >= mCropRectMinSize;
-        boolean changeWidth = mTempRect.width() >= mCropRectMinSize;
+        float ratio = mTempRect.width() / mTempRect.height();
+        boolean isWithinRange = ratio >= mCropRectMinRatio && ratio <= mCropRectMaxRatio;
+        boolean changeHeight = mTempRect.height() >= mCropRectMinSize && isWithinRange;
+        boolean changeWidth = mTempRect.width() >= mCropRectMinSize && isWithinRange;
+
         mCropViewRect.set(
                 changeWidth ? mTempRect.left : mCropViewRect.left,
                 changeHeight ? mTempRect.top : mCropViewRect.top,

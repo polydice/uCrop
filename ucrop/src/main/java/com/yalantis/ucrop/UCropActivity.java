@@ -241,6 +241,15 @@ public class UCropActivity extends AppCompatActivity {
         // Overlay view options
         mOverlayView.setFreestyleCropEnabled(intent.getBooleanExtra(UCrop.Options.EXTRA_FREE_STYLE_CROP, OverlayView.DEFAULT_FREESTYLE_CROP_MODE != OverlayView.FREESTYLE_CROP_MODE_DISABLE));
 
+        float minRatio = intent.getFloatExtra(UCrop.Options.EXTRA_MIN_ASPECT_RATIO, 0f);
+        float maxRatio = intent.getFloatExtra(UCrop.Options.EXTRA_MAX_ASPECT_RATIO, 0f);
+        if (minRatio > 0f) {
+            mOverlayView.setCropRectMinRatio(minRatio);
+        }
+        if (maxRatio > 0f) {
+            mOverlayView.setCropRectMaxRatio(maxRatio);
+        }
+
         mOverlayView.setDimmedColor(intent.getIntExtra(UCrop.Options.EXTRA_DIMMED_LAYER_COLOR, getResources().getColor(R.color.ucrop_color_default_dimmed)));
         mOverlayView.setCircleDimmedLayer(intent.getBooleanExtra(UCrop.Options.EXTRA_CIRCLE_DIMMED_LAYER, OverlayView.DEFAULT_CIRCLE_DIMMED_LAYER));
 

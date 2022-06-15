@@ -301,6 +301,8 @@ public class UCrop {
 
         public static final String EXTRA_UCROP_ROOT_VIEW_BACKGROUND_COLOR = EXTRA_PREFIX + ".UcropRootViewBackgroundColor";
 
+        public static final String EXTRA_MIN_ASPECT_RATIO = EXTRA_PREFIX + ".MinAspectRatio";
+        public static final String EXTRA_MAX_ASPECT_RATIO = EXTRA_PREFIX + ".MaxAspectRatio";
 
         private final Bundle mOptionBundle;
 
@@ -508,6 +510,14 @@ public class UCrop {
          */
         public void setFreeStyleCropEnabled(boolean enabled) {
             mOptionBundle.putBoolean(EXTRA_FREE_STYLE_CROP, enabled);
+        }
+
+        public void setMaxAspectRatio(float x, float y) {
+            mOptionBundle.putFloat(EXTRA_MAX_ASPECT_RATIO, x / y);
+        }
+
+        public void setMinAspectRatio(float x, float y) {
+            mOptionBundle.putFloat(EXTRA_MIN_ASPECT_RATIO, x / y);
         }
 
         /**
