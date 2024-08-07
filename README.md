@@ -24,9 +24,9 @@
 	}
 	```
 
-    ``` implementation 'com.github.yalantis:ucrop:2.2.6' ``` - lightweight general solution
+    ``` implementation 'com.github.yalantis:ucrop:2.2.8' ``` - lightweight general solution
 
-    ``` implementation 'com.github.yalantis:ucrop:2.2.6-native' ``` - get power of the native code to preserve image quality (+ about 1.5 MB to an apk size)
+    ``` implementation 'com.github.yalantis:ucrop:2.2.8-native' ``` - get power of the native code to preserve image quality (+ about 1.5 MB to an apk size)
 
 2. Add UCropActivity into your AndroidManifest.xml
 
@@ -39,13 +39,12 @@
 
 3. The uCrop configuration is created using the builder pattern.
 
-	```java
-    UCrop.of(sourceUri, destinationUri)
-        .withAspectRatio(16, 9)
-        .withMaxResultSize(maxWidth, maxHeight)
-        .start(context);
-    ```
-
+   ```java
+   UCrop.of(sourceUri, destinationUri)
+       .withAspectRatio(16, 9)
+       .withMaxResultSize(maxWidth, maxHeight)
+       .start(context);
+   ```
 
 4. Override `onActivityResult` method and handle uCrop result.
 
@@ -59,6 +58,7 @@
         }
     }
     ```
+
 5. You may want to add this to your PROGUARD config:
 
     ```
@@ -75,7 +75,7 @@ uCrop builder class has method `withOptions(UCrop.Options options)` which extend
 
 Currently, you can change:
 
-   * image compression format (e.g. PNG, JPEG, WEBP), compression
+   * image compression format (e.g. PNG, JPEG), compression
    * image compression quality [0 - 100]. PNG which is lossless, will ignore the quality setting.
    * whether all gestures are enabled simultaneously
    * maximum size for Bitmap that is decoded from source Uri and used within crop view. If you want to override the default behaviour.
@@ -93,6 +93,13 @@ Currently, you can change:
 
 # Changelog
 
+### Version: 2.2.9
+
+*   Update compileSdk and targetSdk versions up to 33
+*   Fixed [#867](https://github.com/Yalantis/uCrop/issues/867)
+*   Fixed [#873](https://github.com/Yalantis/uCrop/issues/873)
+*   And other improvements
+
 ### Version: 2.2.8
 
 *   Merged pending pull requests with improvements and bugfixes
@@ -109,7 +116,6 @@ Currently, you can change:
 *   Fixed [#543](https://github.com/Yalantis/uCrop/issues/543)
 *   Fixed [#602](https://github.com/Yalantis/uCrop/issues/602)
 *   And other improvements
-
 
 ### Version: 2.2.4
 
