@@ -326,6 +326,8 @@ public class UCropFragment extends Fragment {
     }
 
     private void setupAspectRatioWidget(@NonNull Bundle bundle, View view) {
+        boolean toggleRatioEnabled = bundle.getBoolean(UCrop.Options.EXTRA_TOGGLE_RATIO, true);
+
         int aspectRationSelectedByDefault = bundle.getInt(UCrop.Options.EXTRA_ASPECT_RATIO_SELECTED_BY_DEFAULT, 0);
         ArrayList<AspectRatio> aspectRatioList = bundle.getParcelableArrayList(UCrop.Options.EXTRA_ASPECT_RATIO_OPTIONS);
 
@@ -353,6 +355,7 @@ public class UCropFragment extends Fragment {
             aspectRatioTextView = ((AspectRatioTextView) wrapperAspectRatio.getChildAt(0));
             aspectRatioTextView.setActiveColor(mActiveControlsWidgetColor);
             aspectRatioTextView.setAspectRatio(aspectRatio);
+            aspectRatioTextView.setToggleRatioEnabled(toggleRatioEnabled);
 
             wrapperAspectRatioList.addView(wrapperAspectRatio);
             mCropAspectRatioViews.add(wrapperAspectRatio);

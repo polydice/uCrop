@@ -37,6 +37,8 @@ public class AspectRatioTextView extends AppCompatTextView {
     private String mAspectRatioTitle;
     private float mAspectRatioX, mAspectRatioY;
 
+    private boolean mToggleRatioEnabled = true;
+
     public AspectRatioTextView(Context context) {
         this(context, null);
     }
@@ -76,13 +78,16 @@ public class AspectRatioTextView extends AppCompatTextView {
     }
 
     public float getAspectRatio(boolean toggleRatio) {
-        if (toggleRatio) {
+        if (toggleRatio && mToggleRatioEnabled) {
             toggleAspectRatio();
             setTitle();
         }
         return mAspectRatio;
     }
 
+    public void setToggleRatioEnabled(boolean enabled) {
+        mToggleRatioEnabled = enabled;
+    }
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

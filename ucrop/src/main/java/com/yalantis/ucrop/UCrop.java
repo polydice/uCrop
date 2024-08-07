@@ -314,6 +314,7 @@ public class UCrop {
 
         public static final String EXTRA_MIN_ASPECT_RATIO = EXTRA_PREFIX + ".MinAspectRatio";
         public static final String EXTRA_MAX_ASPECT_RATIO = EXTRA_PREFIX + ".MaxAspectRatio";
+        public static final String EXTRA_TOGGLE_RATIO = EXTRA_PREFIX + ".ToggleRatio";
 
         private final Bundle mOptionBundle;
 
@@ -529,6 +530,10 @@ public class UCrop {
 
         public void setMinAspectRatio(float x, float y) {
             mOptionBundle.putFloat(EXTRA_MIN_ASPECT_RATIO, x / y);
+        }
+
+        public void setToggleRatioEnabled(boolean enabled) {
+            mOptionBundle.putBoolean(EXTRA_TOGGLE_RATIO, enabled);
         }
 
         /**

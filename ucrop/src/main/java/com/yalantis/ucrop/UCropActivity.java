@@ -442,6 +442,7 @@ public class UCropActivity extends AppCompatActivity {
     }
 
     private void setupAspectRatioWidget(@NonNull Intent intent) {
+        boolean toggleRatioEnabled = intent.getBooleanExtra(UCrop.Options.EXTRA_TOGGLE_RATIO, true);
 
         int aspectRationSelectedByDefault = intent.getIntExtra(UCrop.Options.EXTRA_ASPECT_RATIO_SELECTED_BY_DEFAULT, 0);
         ArrayList<AspectRatio> aspectRatioList = intent.getParcelableArrayListExtra(UCrop.Options.EXTRA_ASPECT_RATIO_OPTIONS);
@@ -470,6 +471,7 @@ public class UCropActivity extends AppCompatActivity {
             aspectRatioTextView = ((AspectRatioTextView) wrapperAspectRatio.getChildAt(0));
             aspectRatioTextView.setActiveColor(mActiveControlsWidgetColor);
             aspectRatioTextView.setAspectRatio(aspectRatio);
+            aspectRatioTextView.setToggleRatioEnabled(toggleRatioEnabled);
 
             wrapperAspectRatioList.addView(wrapperAspectRatio);
             mCropAspectRatioViews.add(wrapperAspectRatio);
