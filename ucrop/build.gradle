@@ -4,7 +4,7 @@ apply from: '../mavenpush.gradle'
 android {
     compileSdk 33
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 33
         versionCode 27
         versionName "2.2.9-native"
@@ -39,4 +39,5 @@ dependencies {
     implementation "androidx.transition:transition:${androidx_transition_version}"
     // OkHttp3 versions above 3.12.x don't support pre-Lollipop Android versions (API 21)
     implementation "com.squareup.okhttp3:okhttp:3.12.13"
+    implementation 'org.wysaid:gpuimage-plus:3.0.0-min'
 }

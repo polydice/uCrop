@@ -10,5 +10,9 @@
     <string name="ucrop_rotate">Rotate</string>
     <string name="ucrop_scale">Scale</string>
     <string name="ucrop_crop">Crop</string>
+    <string name="ucrop_beautify">Beautify</string>
+    <string name="ucrop_beautify_tips">New feature✨\nOne tap to beautify！</string>
+    <string name="ucrop_beautify_options_default">Default</string>
+    <string name="ucrop_beautify_options_filter">Filter</string>
 
 </resources>

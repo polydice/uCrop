@@ -10,5 +10,9 @@
     <string name="ucrop_rotate">旋轉</string>
     <string name="ucrop_scale">縮放</string>
     <string name="ucrop_crop">裁切</string>
+    <string name="ucrop_beautify">美化</string>
+    <string name="ucrop_beautify_tips">新功能✨\n按此一鍵美化照片！</string>
+    <string name="ucrop_beautify_options_default">原圖</string>
+    <string name="ucrop_beautify_options_filter">一鍵美化</string>
 
 </resources>

@@ -53,6 +53,7 @@ public class TransformImageView extends AppCompatImageView {
     private int mMaxBitmapSize = 0;
 
     private String mImageInputPath, mImageOutputPath;
+    private String mFilteredImageInputPath;
     private ExifInfo mExifInfo;
 
     /**
@@ -120,6 +121,13 @@ public class TransformImageView extends AppCompatImageView {
 
     public String getImageInputPath() {
         return mImageInputPath;
+    }
+
+    public void setFilteredImageInputPath(String path) {
+        mFilteredImageInputPath = path;
+    }
+    public String getFilteredImageInputPath() {
+        return mFilteredImageInputPath;
     }
 
     public String getImageOutputPath() {

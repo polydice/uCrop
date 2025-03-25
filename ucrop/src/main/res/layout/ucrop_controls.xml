@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -31,6 +32,69 @@
         <include
             android:id="@+id/layout_scale_wheel"
             layout="@layout/ucrop_layout_scale_wheel" />
+
+        <LinearLayout
+            android:id="@+id/layout_beautify"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/beautify_options_default"
+                style="@style/ucrop_WrapperIconState"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/icon_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ucrop_beautify_options_default" />
+
+                <TextView
+                    android:id="@+id/text_default"
+                    style="@style/ucrop_TextViewCropAspectRatio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/ucrop_beautify_options_default"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/beautify_options_filter"
+                style="@style/ucrop_WrapperIconState"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/icon_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ucrop_beautify_options_filter" />
+
+                <TextView
+                    android:id="@+id/text_filter"
+                    style="@style/ucrop_TextViewCropAspectRatio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/ucrop_beautify_options_filter"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </FrameLayout>
 
@@ -98,6 +162,24 @@
                 android:id="@+id/text_view_scale"
                 style="@style/ucrop_TextViewWidget"
                 android:text="@string/ucrop_scale" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/state_beautify"
+            style="@style/ucrop_WrapperIconState">
+
+            <ImageView
+                android:id="@+id/image_view_state_beautify"
+                style="@style/ucrop_ImageViewWidgetIcon"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:srcCompat="@drawable/ucrop_beautify" />
+
+            <TextView
+                android:id="@+id/text_view_beautify"
+                style="@style/ucrop_TextViewWidget"
+                android:text="@string/ucrop_beautify" />
 
         </LinearLayout>
     </LinearLayout>

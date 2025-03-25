@@ -31,4 +31,8 @@
     <color name="ucrop_color_default_dimmed">#8c000000</color>
     <color name="ucrop_color_default_logo">#4f212121</color>
 
+    <!--ViewTooltip View-->
+    <color name="ucrop_color_view_tooltip_background">#564E4A</color>
+    <color name="ucrop_color_view_tooltip_text">#FFFFFF</color>
+
 </resources>

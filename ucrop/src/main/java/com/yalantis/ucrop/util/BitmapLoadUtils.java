@@ -16,6 +16,8 @@ import com.yalantis.ucrop.callback.BitmapLoadCallback;
 import com.yalantis.ucrop.task.BitmapLoadTask;
 
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -173,4 +175,16 @@ public class BitmapLoadUtils {
         }
     }
 
+    public static String saveBitmapToCache(Context context, Bitmap bitmap) {
+        String filename = "ucrop_filtered_image.jpg";
+        File file = new File(context.getCacheDir(), filename);
+        try {
+            FileOutputStream stream = new FileOutputStream(file.getPath());
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            stream.close();
+        } catch (IOException e) {
+            Log.e(TAG, "save filtered bitmap to cache error: ", e);
+        }
+        return file.getPath();
+    }
 }

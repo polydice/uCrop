@@ -88,6 +88,27 @@ public class CropImageView extends TransformImageView {
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    public void cropAndSaveImage(@NonNull Bitmap.CompressFormat compressFormat, int compressQuality, boolean isFiltered,
+                                 @Nullable BitmapCropCallback cropCallback) {
+        cancelAllAnimations();
+        setImageToWrapCropBounds(false);
+
+        final ImageState imageState = new ImageState(
+                mCropRect, RectUtils.trapToRect(mCurrentImageCorners),
+                getCurrentScale(), getCurrentAngle());
+
+        String imagePath = getImageInputPath();
+        if (isFiltered) {
+            imagePath = getFilteredImageInputPath();
+        }
+        final CropParameters cropParameters = new CropParameters(
+                mMaxResultImageSizeX, mMaxResultImageSizeY,
+                compressFormat, compressQuality, imagePath, getImageOutputPath(), getExifInfo());
+
+        new BitmapCropTask(getViewBitmap(), imageState, cropParameters, cropCallback)
+                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     /**
      * @return - maximum scale value for current image and crop ratio
      */

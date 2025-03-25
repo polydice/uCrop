@@ -1,7 +1,9 @@
 package com.yalantis.ucrop;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Animatable;
@@ -11,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,12 +30,14 @@ import android.widget.TextView;
 
 import com.yalantis.ucrop.callback.BitmapCropCallback;
 import com.yalantis.ucrop.model.AspectRatio;
+import com.yalantis.ucrop.util.BitmapLoadUtils;
 import com.yalantis.ucrop.util.SelectedStateListDrawable;
 import com.yalantis.ucrop.view.CropImageView;
 import com.yalantis.ucrop.view.GestureCropImageView;
 import com.yalantis.ucrop.view.OverlayView;
 import com.yalantis.ucrop.view.TransformImageView;
 import com.yalantis.ucrop.view.UCropView;
+import com.yalantis.ucrop.view.ViewTooltip;
 import com.yalantis.ucrop.view.widget.AspectRatioTextView;
 import com.yalantis.ucrop.view.widget.HorizontalProgressWheelView;
 
@@ -55,6 +60,8 @@ import androidx.core.content.ContextCompat;
 import androidx.transition.AutoTransition;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
+
+import org.wysaid.nativePort.CGENativeLibrary;
 
 /**
  * Created by Oleksii Shliama (https://github.com/shliama).
@@ -83,6 +90,8 @@ public class UCropActivity extends AppCompatActivity {
     private static final int SCALE_WIDGET_SENSITIVITY_COEFFICIENT = 15000;
     private static final int ROTATE_WIDGET_SENSITIVITY_COEFFICIENT = 42;
 
+    private SharedPreferences sharedPreferences;
+
     private String mToolbarTitle;
 
     // Enables dynamic coloring
@@ -104,9 +113,10 @@ public class UCropActivity extends AppCompatActivity {
     private UCropView mUCropView;
     private GestureCropImageView mGestureCropImageView;
     private OverlayView mOverlayView;
-    private ViewGroup mWrapperStateAspectRatio, mWrapperStateRotate, mWrapperStateScale;
-    private ViewGroup mLayoutAspectRatio, mLayoutRotate, mLayoutScale;
+    private ViewGroup mWrapperStateAspectRatio, mWrapperStateRotate, mWrapperStateScale, mWrapperStateBeautify;
+    private ViewGroup mLayoutAspectRatio, mLayoutRotate, mLayoutScale, mLayoutBeautify;
     private List<ViewGroup> mCropAspectRatioViews = new ArrayList<>();
+    private LinearLayout beautifyOptionsDefault, beautifyOptionsFilter;
     private TextView mTextViewRotateAngle, mTextViewScalePercent;
     private View mBlockingView;
 
@@ -115,6 +125,7 @@ public class UCropActivity extends AppCompatActivity {
     private Bitmap.CompressFormat mCompressFormat = DEFAULT_COMPRESS_FORMAT;
     private int mCompressQuality = DEFAULT_COMPRESS_QUALITY;
     private int[] mAllowedGestures = new int[]{SCALE, ROTATE, ALL};
+    private Bitmap mDefaultBitmap, mFilteredBitmap;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -126,6 +137,8 @@ public class UCropActivity extends AppCompatActivity {
         setContentView(R.layout.ucrop_activity_photobox);
 
         final Intent intent = getIntent();
+
+        sharedPreferences = getSharedPreferences("ucrop_preferences", Context.MODE_PRIVATE);
 
         setupViews(intent);
         setImageData(intent);
@@ -327,15 +340,20 @@ public class UCropActivity extends AppCompatActivity {
             mWrapperStateRotate.setOnClickListener(mStateClickListener);
             mWrapperStateScale = findViewById(R.id.state_scale);
             mWrapperStateScale.setOnClickListener(mStateClickListener);
+            mWrapperStateBeautify = findViewById(R.id.state_beautify);
+            mWrapperStateBeautify.setOnClickListener(mStateClickListener);
 
             mLayoutAspectRatio = findViewById(R.id.layout_aspect_ratio);
             mLayoutRotate = findViewById(R.id.layout_rotate_wheel);
             mLayoutScale = findViewById(R.id.layout_scale_wheel);
+            mLayoutBeautify = findViewById(R.id.layout_beautify);
 
             setupAspectRatioWidget(intent);
             setupRotateWidget();
             setupScaleWidget();
+            setupBeautifyWidget();
             setupStatesWrapper();
+
         }
     }
 
@@ -401,6 +419,7 @@ public class UCropActivity extends AppCompatActivity {
             mBlockingView.setClickable(false);
             mShowLoader = false;
             supportInvalidateOptionsMenu();
+            setBeautifyFilter();
         }
 
         @Override
@@ -411,6 +430,13 @@ public class UCropActivity extends AppCompatActivity {
 
     };
 
+    private void setBeautifyFilter() {
+        mDefaultBitmap = mGestureCropImageView.getViewBitmap();
+        String ruleString = "@adjust level 0.055 1.0 1.6 @adjust colorbalance 0.0 -0.04 -0.03  @adjust saturation 1.1";
+        mFilteredBitmap = CGENativeLibrary.filterImage_MultipleEffects(mDefaultBitmap, ruleString, 1.0f);
+        mGestureCropImageView.setFilteredImageInputPath(BitmapLoadUtils.saveBitmapToCache(this, mFilteredBitmap));
+    }
+
     /**
      * Use {@link #mActiveControlsWidgetColor} for color filter
      */
@@ -418,10 +444,29 @@ public class UCropActivity extends AppCompatActivity {
         ImageView stateScaleImageView = findViewById(R.id.image_view_state_scale);
         ImageView stateRotateImageView = findViewById(R.id.image_view_state_rotate);
         ImageView stateAspectRatioImageView = findViewById(R.id.image_view_state_aspect_ratio);
+        ImageView stateBeautifyImageView = findViewById(R.id.image_view_state_beautify);
 
         stateScaleImageView.setImageDrawable(new SelectedStateListDrawable(stateScaleImageView.getDrawable(), mActiveControlsWidgetColor));
         stateRotateImageView.setImageDrawable(new SelectedStateListDrawable(stateRotateImageView.getDrawable(), mActiveControlsWidgetColor));
         stateAspectRatioImageView.setImageDrawable(new SelectedStateListDrawable(stateAspectRatioImageView.getDrawable(), mActiveControlsWidgetColor));
+        stateBeautifyImageView.setImageDrawable(new SelectedStateListDrawable(stateBeautifyImageView.getDrawable(), mActiveControlsWidgetColor));
+
+        if (!sharedPreferences.getBoolean("beautify_tips_shown", false)) {
+            ViewTooltip
+                    .on(this, stateBeautifyImageView)
+                    .autoHide(true, 5000)
+                    .align(ViewTooltip.ALIGN.CENTER)
+                    .position(ViewTooltip.Position.TOP)
+                    .text(R.string.ucrop_beautify_tips)
+                    .textSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                    .textColor(ContextCompat.getColor(this, R.color.ucrop_color_view_tooltip_text))
+                    .onDisplay(view -> sharedPreferences.edit().putBoolean("beautify_tips_shown", true).apply())
+                    .color(ContextCompat.getColor(this, R.color.ucrop_color_view_tooltip_background))
+                    .arrowWidth(16)
+                    .arrowHeight(16)
+                    .corner(40)
+                    .show();
+        }
     }
 
 
@@ -564,6 +609,25 @@ public class UCropActivity extends AppCompatActivity {
         setScaleTextColor(mActiveControlsWidgetColor);
     }
 
+    private void setupBeautifyWidget() {
+        beautifyOptionsDefault = findViewById(R.id.beautify_options_default);
+        beautifyOptionsFilter = findViewById(R.id.beautify_options_filter);
+
+        beautifyOptionsDefault.setSelected(true);
+
+        beautifyOptionsDefault.setOnClickListener( v -> {
+            beautifyOptionsDefault.setSelected(true);
+            beautifyOptionsFilter.setSelected(false);
+            mGestureCropImageView.setImageBitmap(mDefaultBitmap);
+        });
+
+        beautifyOptionsFilter.setOnClickListener( v -> {
+            beautifyOptionsDefault.setSelected(false);
+            beautifyOptionsFilter.setSelected(true);
+            mGestureCropImageView.setImageBitmap(mFilteredBitmap);
+        });
+    }
+
     private void setAngleText(float angle) {
         if (mTextViewRotateAngle != null) {
             mTextViewRotateAngle.setText(String.format(Locale.getDefault(), "%.1f°", angle));
@@ -625,10 +689,12 @@ public class UCropActivity extends AppCompatActivity {
         mWrapperStateAspectRatio.setSelected(stateViewId == R.id.state_aspect_ratio);
         mWrapperStateRotate.setSelected(stateViewId == R.id.state_rotate);
         mWrapperStateScale.setSelected(stateViewId == R.id.state_scale);
+        mWrapperStateBeautify.setSelected(stateViewId == R.id.state_beautify);
 
         mLayoutAspectRatio.setVisibility(stateViewId == R.id.state_aspect_ratio ? View.VISIBLE : View.GONE);
         mLayoutRotate.setVisibility(stateViewId == R.id.state_rotate ? View.VISIBLE : View.GONE);
         mLayoutScale.setVisibility(stateViewId == R.id.state_scale ? View.VISIBLE : View.GONE);
+        mLayoutBeautify.setVisibility(stateViewId == R.id.state_beautify ? View.VISIBLE : View.GONE);
 
         changeSelectedTab(stateViewId);
 
@@ -647,7 +713,7 @@ public class UCropActivity extends AppCompatActivity {
         mWrapperStateScale.findViewById(R.id.text_view_scale).setVisibility(stateViewId == R.id.state_scale ? View.VISIBLE : View.GONE);
         mWrapperStateAspectRatio.findViewById(R.id.text_view_crop).setVisibility(stateViewId == R.id.state_aspect_ratio ? View.VISIBLE : View.GONE);
         mWrapperStateRotate.findViewById(R.id.text_view_rotate).setVisibility(stateViewId == R.id.state_rotate ? View.VISIBLE : View.GONE);
-
+        mWrapperStateBeautify.findViewById(R.id.text_view_beautify).setVisibility(stateViewId == R.id.state_beautify ? View.VISIBLE : View.GONE);
     }
 
     private void setAllowedGestures(int tab) {
@@ -677,7 +743,7 @@ public class UCropActivity extends AppCompatActivity {
         mShowLoader = true;
         supportInvalidateOptionsMenu();
 
-        mGestureCropImageView.cropAndSaveImage(mCompressFormat, mCompressQuality, new BitmapCropCallback() {
+        mGestureCropImageView.cropAndSaveImage(mCompressFormat, mCompressQuality, beautifyOptionsFilter.isSelected(), new BitmapCropCallback() {
 
             @Override
             public void onBitmapCropped(@NonNull Uri resultUri, int offsetX, int offsetY, int imageWidth, int imageHeight) {
