@@ -432,7 +432,7 @@ public class UCropActivity extends AppCompatActivity {
 
     private void setBeautifyFilter() {
         mDefaultBitmap = mGestureCropImageView.getViewBitmap();
-        String ruleString = "@adjust level 0.055 1.0 1.6 @adjust colorbalance 0.0 -0.04 -0.03  @adjust saturation 1.1";
+        String ruleString = "@adjust level 0.055 1 0.75 @adjust colorbalance 0 -0.04 -0.03@adjust saturation 1.4";
         mFilteredBitmap = CGENativeLibrary.filterImage_MultipleEffects(mDefaultBitmap, ruleString, 1.0f);
         mGestureCropImageView.setFilteredImageInputPath(BitmapLoadUtils.saveBitmapToCache(this, mFilteredBitmap));
     }
