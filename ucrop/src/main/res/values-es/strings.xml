@@ -9,4 +9,5 @@
     <string name="ucrop_scale">Escalar</string>
     <string name="ucrop_crop">Cortar</string>
 
+    <string name="ucrop_cropped_image_size_too_small">El tamaño de la imagen recortada es demasiado pequeño. El tamaño mínimo es %1$sx%2$s.</string>
 </resources>

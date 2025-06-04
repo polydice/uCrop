@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -27,9 +28,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yalantis.ucrop.callback.BitmapCropCallback;
 import com.yalantis.ucrop.model.AspectRatio;
+import com.yalantis.ucrop.model.ExifInfo;
 import com.yalantis.ucrop.util.BitmapLoadUtils;
 import com.yalantis.ucrop.util.SelectedStateListDrawable;
 import com.yalantis.ucrop.view.CropImageView;
@@ -300,10 +303,17 @@ public class UCropActivity extends AppCompatActivity {
         // Result bitmap max size options
         int maxSizeX = intent.getIntExtra(UCrop.EXTRA_MAX_SIZE_X, 0);
         int maxSizeY = intent.getIntExtra(UCrop.EXTRA_MAX_SIZE_Y, 0);
+        int minCropWidth = intent.getIntExtra(UCrop.Options.EXTRA_MIN_CROP_WIDTH, 10);
+        int minCropHeight = intent.getIntExtra(UCrop.Options.EXTRA_MIN_CROP_HEIGHT, 10);
 
         if (maxSizeX > 0 && maxSizeY > 0) {
             mGestureCropImageView.setMaxResultImageSizeX(maxSizeX);
             mGestureCropImageView.setMaxResultImageSizeY(maxSizeY);
+        }
+
+        if (minCropWidth > 0 && minCropHeight > 0) {
+            mGestureCropImageView.setMinCropWidth(minCropWidth);
+            mGestureCropImageView.setMinCropHeight(minCropHeight);
         }
     }
 
@@ -753,8 +763,20 @@ public class UCropActivity extends AppCompatActivity {
 
             @Override
             public void onCropFailure(@NonNull Throwable t) {
-                setResultError(t);
-                finish();
+                if (t instanceof IllegalArgumentException) {
+                    mBlockingView.setClickable(false);
+                    mShowLoader = false;
+                    supportInvalidateOptionsMenu();
+
+                    Log.w(TAG, "Crop failure: " + t.getMessage());
+                    String[] message = t.getMessage().split(":");
+                    String[] sizes = message[1].trim().split("x");
+
+                    Toast.makeText(UCropActivity.this, getString(R.string.ucrop_cropped_image_size_too_small, sizes[0], sizes[1]), Toast.LENGTH_LONG).show();
+                } else {
+                    setResultError(t);
+                    finish();
+                }
             }
         });
     }

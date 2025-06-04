@@ -7,4 +7,6 @@
     <string name="ucrop_rotate">Rotieren</string>
     <string name="ucrop_scale">Skalieren</string>
     <string name="ucrop_crop">Zuschneiden</string>
+
+    <string name="ucrop_cropped_image_size_too_small">Die Größe des zugeschnittenen Bildes ist zu klein. Mindestgröße ist %1$sx%2$s.</string>
 </resources>

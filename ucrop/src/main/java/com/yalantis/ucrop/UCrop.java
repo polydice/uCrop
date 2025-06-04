@@ -116,6 +116,12 @@ public class UCrop {
         return this;
     }
 
+    public UCrop withMinCropSize(int minWidth, int minHeight) {
+        mCropOptionsBundle.putInt(Options.EXTRA_MIN_CROP_WIDTH, minWidth);
+        mCropOptionsBundle.putInt(Options.EXTRA_MIN_CROP_HEIGHT, minHeight);
+        return this;
+    }
+
     public UCrop withOptions(@NonNull Options options) {
         mCropOptionsBundle.putAll(options.getOptionBundle());
         return this;
@@ -315,6 +321,9 @@ public class UCrop {
         public static final String EXTRA_MIN_ASPECT_RATIO = EXTRA_PREFIX + ".MinAspectRatio";
         public static final String EXTRA_MAX_ASPECT_RATIO = EXTRA_PREFIX + ".MaxAspectRatio";
         public static final String EXTRA_TOGGLE_RATIO = EXTRA_PREFIX + ".ToggleRatio";
+
+        public static final String EXTRA_MIN_CROP_WIDTH = EXTRA_PREFIX + ".MinCropWidth";
+        public static final String EXTRA_MIN_CROP_HEIGHT = EXTRA_PREFIX + ".MinCropHeight";
 
         private final Bundle mOptionBundle;
 
@@ -534,6 +543,14 @@ public class UCrop {
 
         public void setToggleRatioEnabled(boolean enabled) {
             mOptionBundle.putBoolean(EXTRA_TOGGLE_RATIO, enabled);
+        }
+
+        public void setMinCropWidth(@IntRange(from = 1) int minWidth) {
+            mOptionBundle.putInt(EXTRA_MIN_CROP_WIDTH, minWidth);
+        }
+
+        public void setMinCropHeight(@IntRange(from = 1) int minHeight) {
+            mOptionBundle.putInt(EXTRA_MIN_CROP_HEIGHT, minHeight);
         }
 
         /**

@@ -15,4 +15,6 @@
     <string name="ucrop_beautify_options_default">Default</string>
     <string name="ucrop_beautify_options_filter">Filter</string>
 
+    <string name="ucrop_cropped_image_size_too_small">Cropped image size is too small. Min size is %1$sx%2$s.</string>
+
 </resources>

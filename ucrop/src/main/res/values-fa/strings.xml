@@ -10,4 +10,6 @@
     <string name="ucrop_scale">اندازه</string>
     <string name="ucrop_crop">برش</string>
 
+    <string name="ucrop_cropped_image_size_too_small">اندازه تصویر برش خورده خیلی کوچک است. حداقل اندازه %1$sx%2$s است.</string>
+
 </resources>

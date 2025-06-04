@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yalantis.ucrop.callback.BitmapCropCallback;
 import com.yalantis.ucrop.model.AspectRatio;
@@ -269,9 +271,17 @@ public class UCropFragment extends Fragment {
         int maxSizeX = bundle.getInt(UCrop.EXTRA_MAX_SIZE_X, 0);
         int maxSizeY = bundle.getInt(UCrop.EXTRA_MAX_SIZE_Y, 0);
 
+        int minCropWidth = bundle.getInt(UCrop.Options.EXTRA_MIN_CROP_WIDTH, 0);
+        int minCropHeight = bundle.getInt(UCrop.Options.EXTRA_MIN_CROP_HEIGHT, 0);
+
         if (maxSizeX > 0 && maxSizeY > 0) {
             mGestureCropImageView.setMaxResultImageSizeX(maxSizeX);
             mGestureCropImageView.setMaxResultImageSizeY(maxSizeY);
+        }
+
+        if (minCropWidth > 0 && minCropHeight > 0) {
+            mGestureCropImageView.setMinCropWidth(minCropWidth);
+            mGestureCropImageView.setMinCropHeight(minCropHeight);
         }
     }
 
@@ -312,9 +322,6 @@ public class UCropFragment extends Fragment {
 
     };
 
-    /**
-     * Use {@link #mActiveWidgetColor} for color filter
-     */
     private void setupStatesWrapper(View view) {
         ImageView stateScaleImageView = view.findViewById(R.id.image_view_state_scale);
         ImageView stateRotateImageView = view.findViewById(R.id.image_view_state_rotate);
@@ -569,7 +576,18 @@ public class UCropFragment extends Fragment {
 
             @Override
             public void onCropFailure(@NonNull Throwable t) {
-                callback.onCropFinish(getError(t));
+                if (t instanceof IllegalArgumentException) {
+                    mBlockingView.setClickable(false);
+                    callback.loadingProgress(false);
+
+                    Log.w(TAG, "Crop failure: " + t.getMessage());
+                    String[] message = t.getMessage().split(":");
+                    String[] sizes = message[1].trim().split("x");
+
+                    Toast.makeText(getContext(), getString(R.string.ucrop_cropped_image_size_too_small, sizes[0], sizes[1]), Toast.LENGTH_LONG).show();
+                } else {
+                    callback.onCropFinish(getError(t));
+                }
             }
         });
     }

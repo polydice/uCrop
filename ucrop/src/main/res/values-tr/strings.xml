@@ -9,4 +9,5 @@
     <string name="ucrop_scale">Ölçek </string>
     <string name="ucrop_crop">Kırp</string>
 
+    <string name="ucrop_cropped_image_size_too_small">Kırpılan görüntü boyutu çok küçük. Minimum boyut %1$sx%2$s\'dir.</string>
 </resources>

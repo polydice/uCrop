@@ -6,4 +6,6 @@
     <string name="ucrop_crop">Обрезать</string>
     <string name="ucrop_menu_crop">Обрезать</string>
     <string name="ucrop_label_edit_photo">Редактировать фото</string>
+
+    <string name="ucrop_cropped_image_size_too_small">Размер обрезанного изображения слишком мал. Минимальный размер: %1$sx%2$s.</string>
 </resources>

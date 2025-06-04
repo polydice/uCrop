@@ -43,6 +43,7 @@ public class BitmapCropTask extends AsyncTask<Void, Void, Throwable> {
 
     private float mCurrentScale, mCurrentAngle;
     private final int mMaxResultImageSizeX, mMaxResultImageSizeY;
+    private final int mMinCropWidth, mMinCropHeight;
 
     private final Bitmap.CompressFormat mCompressFormat;
     private final int mCompressQuality;
@@ -64,6 +65,8 @@ public class BitmapCropTask extends AsyncTask<Void, Void, Throwable> {
         mCurrentAngle = imageState.getCurrentAngle();
         mMaxResultImageSizeX = cropParameters.getMaxResultImageSizeX();
         mMaxResultImageSizeY = cropParameters.getMaxResultImageSizeY();
+        mMinCropWidth = cropParameters.getMinCropWidth();
+        mMinCropHeight = cropParameters.getMinCropHeight();
 
         mCompressFormat = cropParameters.getCompressFormat();
         mCompressQuality = cropParameters.getCompressQuality();
@@ -135,6 +138,10 @@ public class BitmapCropTask extends AsyncTask<Void, Void, Throwable> {
         cropOffsetY = Math.round((mCropRect.top - mCurrentImageRect.top) / mCurrentScale);
         mCroppedImageWidth = Math.round(mCropRect.width() / mCurrentScale);
         mCroppedImageHeight = Math.round(mCropRect.height() / mCurrentScale);
+
+        if (mCroppedImageWidth < mMinCropWidth || mCroppedImageHeight < mMinCropHeight) {
+            throw new IllegalArgumentException("Cropped image size is too small. Min size is: " + mMinCropWidth + "x" + mMinCropHeight);
+        }
 
         boolean shouldCrop = shouldCrop(mCroppedImageWidth, mCroppedImageHeight);
         Log.i(TAG, "Should crop: " + shouldCrop);

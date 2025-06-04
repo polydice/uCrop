@@ -3,5 +3,6 @@
     <string name="ucrop_label_original">Pôvodná</string>
     <string name="ucrop_label_edit_photo">Upraviť fotografiu</string>
     <string name="ucrop_menu_crop">Orezať</string>
-    
+
+    <string name="ucrop_cropped_image_size_too_small">Veľkosť orezaného obrázka je príliš malá. Minimálna veľkosť je %1$sx%2$s.</string>
 </resources>

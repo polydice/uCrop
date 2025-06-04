@@ -2,4 +2,6 @@
     <string name="ucrop_label_original">Originale</string>
     <string name="ucrop_label_edit_photo">Modifica foto</string>
     <string name="ucrop_menu_crop">Taglia</string>
+
+    <string name="ucrop_cropped_image_size_too_small">La dimensione dell\'immagine ritagliata è troppo piccola. La dimensione minima è %1$sx%2$s.</string>
 </resources>

@@ -6,4 +6,6 @@
     <string name="ucrop_rotate">Draaien</string>
     <string name="ucrop_scale">Schalen</string>
     <string name="ucrop_crop">Bijsnijden</string>
+
+    <string name="ucrop_cropped_image_size_too_small">De grootte van de bijgesneden afbeelding is te klein. Minimale grootte is %1$sx%2$s.</string>
 </resources>

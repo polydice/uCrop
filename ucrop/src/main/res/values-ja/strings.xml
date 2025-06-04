@@ -8,4 +8,6 @@
     <string name="ucrop_scale">拡大</string>
     <string name="ucrop_rotate">回転</string>
     <string name="ucrop_crop">比率</string>
+
+    <string name="ucrop_cropped_image_size_too_small">トリミングした画像のサイズが小さすぎます。最小サイズは%1$sx%2$sです。</string>
 </resources>

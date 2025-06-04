@@ -12,4 +12,5 @@
     <string name="ucrop_beautify_options_default">原图</string>
     <string name="ucrop_beautify_options_filter">一键美化</string>
 
+    <string name="ucrop_cropped_image_size_too_small">裁剪后的图片尺寸太小。最小尺寸为 %1$sx%2$s。</string>
 </resources>

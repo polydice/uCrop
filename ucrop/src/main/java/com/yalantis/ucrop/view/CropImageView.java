@@ -52,6 +52,7 @@ public class CropImageView extends TransformImageView {
 
     private float mMaxScale, mMinScale;
     private int mMaxResultImageSizeX = 0, mMaxResultImageSizeY = 0;
+    private int mMinCropWidth = 0, mMinCropHeight = 0;
     private long mImageToWrapCropBoundsAnimDuration = DEFAULT_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION;
 
     public CropImageView(Context context) {
@@ -82,7 +83,7 @@ public class CropImageView extends TransformImageView {
         final CropParameters cropParameters = new CropParameters(
                 mMaxResultImageSizeX, mMaxResultImageSizeY,
                 compressFormat, compressQuality,
-                getImageInputPath(), getImageOutputPath(), getExifInfo());
+                getImageInputPath(), getImageOutputPath(), getExifInfo(), mMinCropWidth, mMinCropHeight);
 
         new BitmapCropTask(getViewBitmap(), imageState, cropParameters, cropCallback)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -103,7 +104,7 @@ public class CropImageView extends TransformImageView {
         }
         final CropParameters cropParameters = new CropParameters(
                 mMaxResultImageSizeX, mMaxResultImageSizeY,
-                compressFormat, compressQuality, imagePath, getImageOutputPath(), getExifInfo());
+                compressFormat, compressQuality, imagePath, getImageOutputPath(), getExifInfo(), mMinCropWidth, mMinCropHeight);
 
         new BitmapCropTask(getViewBitmap(), imageState, cropParameters, cropCallback)
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -194,6 +195,23 @@ public class CropImageView extends TransformImageView {
      */
     public void setMaxResultImageSizeY(@IntRange(from = 10) int maxResultImageSizeY) {
         mMaxResultImageSizeY = maxResultImageSizeY;
+    }
+
+    /**
+     * This method sets minimum width for crop rectangle
+     *
+     * @param minCropWidth - size in pixels
+     */
+    public void setMinCropWidth(@IntRange(from = 10) int minCropWidth) {
+        mMinCropWidth = minCropWidth;
+    }
+    /**
+     * This method sets minimum height for crop rectangle
+     *
+     * @param minCropHeight - size in pixels
+     */
+    public void setMinCropHeight(@IntRange(from = 10) int minCropHeight) {
+        mMinCropHeight = minCropHeight;
     }
 
     /**

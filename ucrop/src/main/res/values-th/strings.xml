@@ -9,4 +9,5 @@
     <string name="ucrop_scale">ขนาด</string>
     <string name="ucrop_crop">พืชผล</string>
 
+    <string name="ucrop_cropped_image_size_too_small">ขนาดของภาพที่ครอบตัดเล็กเกินไป ขนาดต่ำสุดคือ %1$sx%2$s</string>
 </resources>
