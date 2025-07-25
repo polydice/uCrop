@@ -3,6 +3,7 @@ package com.yalantis.ucrop.sample;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -25,12 +26,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.activity.SystemBarStyle;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
@@ -74,13 +80,18 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
     private int mToolbarCropDrawable;
     // Enables dynamic coloring
     private int mToolbarColor;
-    private int mStatusBarColor;
     private int mToolbarWidgetColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this, SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT), SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT));
         setContentView(R.layout.activity_sample);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.settings), (view, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPaddingRelative(insets.left, insets.top, insets.right, insets.bottom);
+            return windowInsets;
+        });
         setupUI();
     }
 
@@ -333,9 +344,12 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
         options.setToolbarCropDrawable(R.drawable.your_crop_icon);
         options.setToolbarCancelDrawable(R.drawable.your_cancel_icon);
 
+        // System bars appearance
+        options.setStatusBarLight(true);
+        options.setNavigationBarLight(false);
+
         // Color palette
         options.setToolbarColor(ContextCompat.getColor(this, R.color.your_color_res));
-        options.setStatusBarColor(ContextCompat.getColor(this, R.color.your_color_res));
         options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
         options.setRootViewBackgroundColor(ContextCompat.getColor(this, R.color.your_color_res));
         options.setActiveControlsWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
@@ -413,7 +427,6 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
 
     public void setupViews(Bundle args) {
         settingsView.setVisibility(View.GONE);
-        mStatusBarColor = args.getInt(UCrop.Options.EXTRA_STATUS_BAR_COLOR, ContextCompat.getColor(this, com.yalantis.ucrop.R.color.ucrop_color_statusbar));
         mToolbarColor = args.getInt(UCrop.Options.EXTRA_TOOL_BAR_COLOR, ContextCompat.getColor(this, com.yalantis.ucrop.R.color.ucrop_color_toolbar));
         mToolbarCancelDrawable = args.getInt(UCrop.Options.EXTRA_UCROP_WIDGET_CANCEL_DRAWABLE, com.yalantis.ucrop.R.drawable.ucrop_ic_cross);
         mToolbarCropDrawable = args.getInt(UCrop.Options.EXTRA_UCROP_WIDGET_CROP_DRAWABLE, com.yalantis.ucrop.R.drawable.ucrop_ic_done);
@@ -428,8 +441,6 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
      * Configures and styles both status bar and toolbar.
      */
     private void setupAppBar() {
-        setStatusBarColor(mStatusBarColor);
-
         toolbar = findViewById(R.id.toolbar);
 
         // Set all of the Toolbar coloring
