@@ -23,16 +23,17 @@ def getRepositoryPassword() {
 
 tasks.register('androidJavadocs', Javadoc) {
     source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath())
 }
 
 tasks.register('androidJavadocsJar', Jar) {
-    classifier = 'javadoc'
+    archiveClassifier.set("javadoc")
     //basename = artifact_id
-    from androidJavadocs.destinationDir
+    from tasks.named('androidJavadocs').get().destinationDir
 }
 
 tasks.register('androidSourcesJar', Jar) {
-    classifier = 'sources'
+    archiveClassifier.set("sources")
     //basename = artifact_id
     from android.sourceSets.main.java.sourceFiles
 }
@@ -50,9 +51,12 @@ publishing {
     publications {
         maven(MavenPublication) {
             afterEvaluate { project ->
-                from components.release
-                artifact androidSourcesJar
-                artifact androidJavadocsJar
+                def releaseComponent = components.findByName('release')
+                if (releaseComponent) {
+                    from releaseComponent
+                }
+                artifact tasks.named('androidSourcesJar').get()
+                artifact tasks.named('androidJavadocsJar').get()
                 version = project.version
             }
 
@@ -90,6 +94,5 @@ publishing {
 signing {
     required { isReleaseBuild() && gradle.taskGraph.hasTask("publishing") }
     sign publishing.publications.maven
-    sign configurations.archives
 }
 
