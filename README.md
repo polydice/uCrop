@@ -24,9 +24,9 @@
 	}
 	```
 
-    ``` implementation 'com.github.yalantis:ucrop:2.2.10' ``` - lightweight general solution
+    ``` implementation 'com.github.yalantis:ucrop:2.2.11' ``` - lightweight general solution
 
-    ``` implementation 'com.github.yalantis:ucrop:2.2.9-native' ``` - get power of the native code to preserve image quality (+ about 1.5 MB to an apk size)
+    ``` implementation 'com.github.yalantis:ucrop:2.2.11-native' ``` - get power of the native code to preserve image quality (+ about 1.5 MB to an apk size)
 
 2. Add UCropActivity into your AndroidManifest.xml
 
@@ -87,11 +87,18 @@ Currently, you can change:
 
 # Compatibility
 
-  * Library - Android ICS 4.0+ (API 14) (Android GINGERBREAD 2.3+ (API 10) for versions <= 1.3.2)
-  * Sample - Android ICS 4.0+ (API 14)
-  * CPU - armeabi armeabi-v7a x86 x86_64 arm64-v8a (for versions >= 2.1.2)
+  * Library - Android Lollipop 5.0+ (API 21) (Android ICS 4.0+ (API 14) for versions < 2.2.11)
+  * Sample - Android Lollipop 5.0+ (API 21)
+  * CPU - armeabi-v7a x86 x86_64 arm64-v8a (for versions >= 2.2.11)
 
 # Changelog
+
+### Version: 2.2.11
+
+*   Updated compileSdk and targetSdk to 36
+*   Added support for 16 KB page sizes
+*   Enabled edge-to-edge UI support
+*   And other improvements
 
 ### Version: 2.2.10
 
@@ -111,7 +118,6 @@ Currently, you can change:
 *   Add localizations
 *   Fixed [#609](https://github.com/Yalantis/uCrop/issues/609)
 *   Fixed [#794](https://github.com/Yalantis/uCrop/issues/794)
-
 
 ### Version: 2.2.5
 
@@ -136,8 +142,8 @@ Currently, you can change:
 
 ### Version: 2.2.2
 
-* uCrop fragment added
-* bugfix
+  * uCrop fragment added
+  * bugfix
 
 ### Version: 2.2.1
 
