@@ -51,10 +51,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             afterEvaluate { project ->
-                def releaseComponent = components.findByName('release')
-                if (releaseComponent) {
-                    from releaseComponent
-                }
+                from(components.release)
                 artifact tasks.named('androidSourcesJar').get()
                 artifact tasks.named('androidJavadocsJar').get()
                 version = project.version
