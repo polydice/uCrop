@@ -55,6 +55,7 @@ publishing {
                 if (releaseComponent) {
                     from releaseComponent
                 }
+                artifact tasks.named("bundleReleaseAar")
                 artifact tasks.named('androidSourcesJar').get()
                 artifact tasks.named('androidJavadocsJar').get()
                 version = project.version
